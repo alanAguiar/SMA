@@ -98,13 +98,13 @@ public class BeeHiveBehaviour extends CyclicBehaviour{
             
             for(Key key : this.points.keySet()){  
                 int value[] = points.get(key);
-                int color = value[0] * 50;
-                if(color%3 == 0)
-                    g2.setColor(new Color(255, color, color));
-                else if(color%2 == 1)
-                    g2.setColor(new Color(color,255, color));
-                else 
-                    g2.setColor(new Color(color, color, 255));
+//                int color = value[0] * 50;
+//                if(color%3 == 0)
+//                    g2.setColor(new Color(255, color, color));
+//                else if(color%2 == 1)
+//                    g2.setColor(new Color(color,255, color));
+//                else 
+//                    g2.setColor(new Color(color, color, 255));
 
                 switch(value[1]){
                     case 0:

@@ -7,6 +7,7 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.FSMBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,31 +20,22 @@ public class Bee extends Agent
     
     //private int maxSteps = 200;
 
-    private int group;
+    private AID group;
     private float x, y;
-    public ArrayList<AID> groupMembers;
-    private float utility;
+    
     
     private AID visitedBee;
-    private int visitedGroup;
+    private AID visitedGroup;
     
     @Override
     public void setup()
     {
-        groupMembers = new ArrayList<AID>();
-        this.setUtility(0);
         Object[] arg = getArguments();
         if(arg != null){
             this.setX(Float.parseFloat((String)arg[0]));
             this.setY(Float.parseFloat((String)arg[1]));
-            this.setGroup(Integer.parseInt((String)arg[2]));
         }
         
-        try {
-            Thread.sleep(group*1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Bee.class.getName()).log(Level.SEVERE, null, ex);
-        }
         addBehaviour(new BeeFSMBehaviour(this));
     }
    
@@ -85,14 +77,24 @@ public class Bee extends Agent
             }
             message = this.receive();
         }
+    }     
+    
+    public double getGroupUtility(){
+        ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+        message.addReceiver(this.getGroup());
+        this.send(message);
+        
+        MessageTemplate MT = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
+        
+        message = this.receive(MT);
+        return Double.parseDouble((String)message.getContent());
     }
     
-    
-    public int getGroup() {
+    public AID getGroup() {
         return group;
     }
 
-    public void setGroup(int group) {
+    public void setGroup(AID group) {
         this.group = group;
     }
 
@@ -110,15 +112,7 @@ public class Bee extends Agent
 
     public void setY(float y) {
         this.y = y;
-    }   
-
-    public float getUtility() {
-        return utility;
-    }
-
-    public void setUtility(float utility) {
-        this.utility = utility;
-    }
+    } 
 
     public AID getVisitedBee() {
         return visitedBee;
@@ -128,13 +122,11 @@ public class Bee extends Agent
         this.visitedBee = visitedBee;
     }
 
-    public int getVisitedGroup() {
+    public AID getVisitedGroup() {
         return visitedGroup;
     }
 
-    public void setVisitedGroup(int visitedGroup) {
+    public void setVisitedGroup(AID visitedGroup) {
         this.visitedGroup = visitedGroup;
     }
-    
-    
 }

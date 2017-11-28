@@ -7,6 +7,7 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.Property;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
+import jade.lang.acl.ACLMessage;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,7 +17,7 @@ public class DancingBehaviour extends SimpleBehaviour
     Bee bee;
     private double s=1, theta=1;
     private final double alpha = 0.02;
-    private float utility;
+    private double utility;
     private Random rand;
     
     public DancingBehaviour(Bee a){
@@ -30,7 +31,7 @@ public class DancingBehaviour extends SimpleBehaviour
     
     @Override
     public void action() {
-        this.utility = bee.getUtility();
+        this.utility = bee.getGroupUtility();
         bee.receiveMessage(bee.DANCING);
         if (!added) {
             //System.out.println(myAgent.getLocalName() + " is dancing");
@@ -38,6 +39,7 @@ public class DancingBehaviour extends SimpleBehaviour
             service.setType("DANCING");
 
             Property p1 = new Property("group", bee.getGroup());
+            
             Property p2 = new Property("groupSize", bee.groupMembers.size() + 1);
             service.addProperties(p1);
             service.addProperties(p2);
@@ -61,14 +63,16 @@ public class DancingBehaviour extends SimpleBehaviour
 
     @Override
     public boolean done(){
-        if(bee.getUtility() > this.utility){
+        double newUtility = bee.getGroupUtility();
+        if(newUtility > utility){
             s+= alpha;
             theta -= alpha;
         }
-        else if(bee.getUtility() < this.utility){
+        else if(newUtility < utility){
             s-= alpha;
             theta += alpha;
         }
+        utility = newUtility;
         double pn = Math.pow(s, 2)/(Math.pow(s, 2)+Math.pow(theta, 2));
         int r = rand.nextInt(101);
         //System.out.println(myAgent.getAID().getLocalName()+": "+pn*100+" "+ r);
@@ -89,5 +93,6 @@ public class DancingBehaviour extends SimpleBehaviour
         }
         return 1;
     }
+    
     
 }

@@ -11,6 +11,7 @@ import java.util.Scanner;
 public class VisitingBehaviour extends OneShotBehaviour
 {
     private Bee bee;
+    int returnValue;
     
     public VisitingBehaviour(Bee a){
         super(a);
@@ -45,21 +46,35 @@ public class VisitingBehaviour extends OneShotBehaviour
         Random rand = new Random();
         int r = rand.nextInt(100);
         
-        if(r>pa)            
-            System.out.println("Abandonei");
-            //Verificar utilidade de seu grupo
-                    //informar a membros de seu grupo que saiu
-                    //trocar de grupo
-                    //informar membros do novo grupo
+        if(r>pa){
+            double utility = bee.getGroupUtility();
+            
+            ACLMessage removeBee = new ACLMessage(ACLMessage.INFORM);
+            removeBee.addReceiver(bee.getGroup());
+            removeBee.setContent("Remove");
+            bee.send(removeBee);
+            
+            double newUtility = bee.getGroupUtility();
+            
+            if(newUtility >= utility){
+                bee.setGroup(bee.getVisitedGroup());
+                returnValue = 1;
+            }
+            else
+                returnValue = 0;
+            
+            ACLMessage addBee = new ACLMessage(ACLMessage.INFORM);
+            addBee.addReceiver(bee.getGroup());
+            addBee.setContent("Add " + bee.getX() + " " + bee.getY());
+            bee.send(addBee);
+        }
         else
-            System.out.println("Voltei a assistir");
-            //voltar a assistir
-        //System.out.println(bee.getVisitedBee().getLocalName() + " visitado por " + myAgent.getAID().getLocalName());
+            returnValue = 0;
     }
 
     @Override
     public int onEnd() {
-        return 1;
+        return returnValue;
     }
     
 }

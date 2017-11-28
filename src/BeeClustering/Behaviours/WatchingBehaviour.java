@@ -45,7 +45,7 @@ public class WatchingBehaviour extends OneShotBehaviour{
                     group = (Property)properties.next();
                     groupSize = (Property)properties.next();
                     bee.setVisitedBee(result[r].getName());
-                    bee.setVisitedGroup(Integer.parseInt((String)group.getValue()));
+                    bee.setVisitedGroup((AID)group.getValue());
                 }while(bee.getVisitedGroup() == bee.getGroup());
 
                 int count =0;
@@ -53,7 +53,7 @@ public class WatchingBehaviour extends OneShotBehaviour{
                     ServiceDescription service = (ServiceDescription) result1.getAllServices().next();
                     Iterator properties = service.getAllProperties();
                     Property p = (Property) properties.next();
-                    if(Integer.parseInt((String)p.getValue()) == Integer.parseInt((String)group.getValue())){
+                    if((AID)p.getValue() == (AID)group.getValue()){
                         count++;
                     }
                 }

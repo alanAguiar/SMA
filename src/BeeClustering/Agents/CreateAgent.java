@@ -18,15 +18,15 @@ public class CreateAgent {
             Bee bee1 = new Bee();
             bee1.setX(1.0f);
             bee1.setY(2.0f);
-            bee1.setGroup(1);
+            //bee1.setGroup(1);
             Bee bee2 = new Bee();
             bee2.setX(2.0f);
             bee2.setY(3.0f);
-            bee2.setGroup(2);
+            //bee2.setGroup(2);
             Bee bee3 = new Bee();
             bee3.setX(2.0f);
             bee3.setY(4.0f);
-            bee3.setGroup(3);
+            //bee3.setGroup(3);
             BeeHive bh = new BeeHive();
             bh.setMaxX(2.0f);
             bh.setMinX(1.0f);

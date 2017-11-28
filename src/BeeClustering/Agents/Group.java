@@ -56,6 +56,10 @@ public class Group extends Agent{
     public double getUtility(){
         return this.utility;
     }
+    
+    public int getSize(){
+        return groupComponents.size();
+    }
 }
 
 
