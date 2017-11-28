@@ -24,7 +24,7 @@ public class GroupBehaviour extends SimpleBehaviour{
             if(message.getPerformative() == ACLMessage.REQUEST){
                 ACLMessage reply = message.createReply();
                 reply.setPerformative(ACLMessage.INFORM);
-                reply.setContent(Double.toString(group.getUtility()));
+                reply.setContent(group.getUtility() + " " + group.getSize());
                 group.send(reply);
             }
             else if(message.getPerformative() == ACLMessage.INFORM){

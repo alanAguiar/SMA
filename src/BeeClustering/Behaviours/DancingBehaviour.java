@@ -40,7 +40,7 @@ public class DancingBehaviour extends SimpleBehaviour
 
             Property p1 = new Property("group", bee.getGroup());
             
-            Property p2 = new Property("groupSize", bee.groupMembers.size() + 1);
+            Property p2 = new Property("groupSize", bee.getGroupSize() + 1);
             service.addProperties(p1);
             service.addProperties(p2);
 

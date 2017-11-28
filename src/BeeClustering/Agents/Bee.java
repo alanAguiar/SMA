@@ -8,9 +8,8 @@ import jade.core.Agent;
 import jade.core.behaviours.FSMBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Locale;
+import java.util.Scanner;
 
 public class Bee extends Agent
 {
@@ -22,7 +21,7 @@ public class Bee extends Agent
 
     private AID group;
     private float x, y;
-    
+    private int groupSize;
     
     private AID visitedBee;
     private AID visitedGroup;
@@ -87,7 +86,14 @@ public class Bee extends Agent
         MessageTemplate MT = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
         
         message = this.receive(MT);
-        return Double.parseDouble((String)message.getContent());
+        while(message==null)
+            message = this.receive(MT);
+        
+        Scanner scan = new Scanner(message.getContent());
+        scan.useLocale(Locale.US);
+        double utility = scan.nextDouble();
+        this.setGroupSize(scan.nextInt());
+        return utility;
     }
     
     public AID getGroup() {
@@ -98,6 +104,14 @@ public class Bee extends Agent
         this.group = group;
     }
 
+    public void setGroupSize(int s){
+        this.groupSize = s;
+    }
+    
+    public int getGroupSize(){
+        return this.groupSize;
+    }
+    
     public float getX() {
         return x;
     }
