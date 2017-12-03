@@ -69,8 +69,7 @@ public class Bee extends Agent
             registerTransition(TWO_STATE, TWO_STATE, 0);
             registerTransition(TWO_STATE, THREE_STATE, 1);
             registerTransition(THREE_STATE, TWO_STATE, 0);
-            registerTransition(THREE_STATE, ONE_STATE, 1);            
-            registerTransition(THREE_STATE, THREE_STATE, 2);
+            registerTransition(THREE_STATE, ONE_STATE, 1);     
         }
     }
     
@@ -81,22 +80,27 @@ public class Bee extends Agent
                 ACLMessage reply = message.createReply();
                 reply.setPerformative(ACLMessage.INFORM);
                 reply.setContent(this.getX() + " " + this.getY() + " " + replyContent + " " + this.getGroup().toString());
+                                
                 this.send(reply);
             }
             message = this.receive();
         }
     }     
     
-    public double getGroupUtility(){
+    public double getGroupUtility() throws InterruptedException{
         ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
         message.addReceiver(this.getGroup());
         this.send(message);
         
-        MessageTemplate MT = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
+        MessageTemplate MT  = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
+        MessageTemplate MT2 = MessageTemplate.MatchSender(this.getGroup());
+        MessageTemplate MT3 = MessageTemplate.and(MT, MT2);
         
-        message = this.receive(MT);
-        while(message==null)
-            message = this.receive(MT);
+        message = this.receive(MT3);
+        while(message==null){
+            message = this.receive(MT3);
+            Thread.sleep(100);
+        }
         
         Scanner scan = new Scanner(message.getContent());
         scan.useLocale(Locale.US);

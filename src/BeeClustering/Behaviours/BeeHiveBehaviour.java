@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -28,7 +29,7 @@ public class BeeHiveBehaviour extends CyclicBehaviour{
     public BeeHiveBehaviour(BeeHive bh){
         super(bh);
         this.bh = bh;
-        points = new HashMap<>(); 
+        points = new ConcurrentHashMap<>(); 
         pane = new BeeHivePanel(points, bh.getMaxX(), bh.getMinX(), bh.getMaxY(), bh.getMinY(), 640, 480);
         
         SwingUtilities.invokeLater(new Runnable() {
@@ -65,15 +66,15 @@ public class BeeHiveBehaviour extends CyclicBehaviour{
             String val[] = {group, Integer.toString(state)};
             points.put(new Key(x, y), val);
             message = myAgent.receive();
-        }               
-        
-        pane.repaint();
+        }           
+               
         
         try {
-            Thread.sleep(1500);
+            Thread.sleep(100);
         } catch (InterruptedException ex) {
             Logger.getLogger(BeeHiveBehaviour.class.getName()).log(Level.SEVERE, null, ex);
         }
+        pane.repaint();
     }
     
     private class BeeHivePanel extends JPanel{
@@ -90,13 +91,12 @@ public class BeeHiveBehaviour extends CyclicBehaviour{
             this.height = h;
             this.width = w;
         }
-        
+        synchronized 
         @Override
         public void paintComponent(Graphics g){ 
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D) g;
             g2.setFont(new Font("default", Font.BOLD, 14));
-            
             for(Key key : this.points.keySet()){  
                 String value[] = points.get(key);
                 int color = (Math.abs(value[0].hashCode()))%255;

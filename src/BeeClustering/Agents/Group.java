@@ -70,6 +70,11 @@ public class Group extends Agent{
     public int getSize(){
         return groupComponents.size();
     }
+    
+    @Override
+    public void takeDown(){
+        System.out.println(this.getAID().getLocalName() + " deleted");
+    }
 }
 
 

@@ -31,7 +31,7 @@ public class CreateAgent {
             BeeHive bh = new BeeHive();
             Map<Key, Integer> createdBees;
             createdBees = new HashMap<Key, Integer>();
-            while(i<60){
+            while(scan.hasNextLine() && i<60){
                 String line = scan.nextLine();
                 String[] elements = line.split(",");
                                 

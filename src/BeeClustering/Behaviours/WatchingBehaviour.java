@@ -57,7 +57,7 @@ public class WatchingBehaviour extends OneShotBehaviour{
                     Property p = (Property) properties.next();
                     StringACLCodec codec = new StringACLCodec(new StringReader((String)p.getValue()), null);
                     AID pAID = codec.decodeAID();
-                    if(pAID.equals(bee.getVisitedGroup())){
+                    if(pAID.toString().equals(bee.getVisitedGroup().toString())){
                         count++;
                     }
                 }

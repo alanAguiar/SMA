@@ -9,7 +9,6 @@ import java.util.Scanner;
 
 public class GroupBehaviour extends SimpleBehaviour{
     Group group;
-    int count = 100;
     public GroupBehaviour(Group group){
         super(group);
         this.group = group;
@@ -46,12 +45,7 @@ public class GroupBehaviour extends SimpleBehaviour{
 
     @Override
     public boolean done() {
-//        return false;
-        if(group.getSize() == 0)
-            count++;
-        else
-            count = 100;
-        return count<0;
+        return group.getSize() == 0;
     }
     
     @Override
@@ -59,5 +53,4 @@ public class GroupBehaviour extends SimpleBehaviour{
         myAgent.doDelete();
         return  1;
     }
-    
 }

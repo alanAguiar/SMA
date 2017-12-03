@@ -80,9 +80,8 @@ public class DancingBehaviour extends SimpleBehaviour
     public int onEnd() { 
         try
         {
-            DFService.deregister(myAgent);
             dfd.removeServices(service);
-            //System.out.println(myAgent.getAID().getLocalName() + " is watching");
+            DFService.deregister(myAgent);
             added = false;
         }
         catch(FIPAException e)
