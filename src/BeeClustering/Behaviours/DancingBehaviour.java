@@ -19,6 +19,8 @@ public class DancingBehaviour extends SimpleBehaviour
     private final double alpha = 0.02;
     private double utility;
     private Random rand;
+    DFAgentDescription dfd;
+    ServiceDescription service;
     
     public DancingBehaviour(Bee a){
         super(a);
@@ -35,17 +37,17 @@ public class DancingBehaviour extends SimpleBehaviour
         bee.receiveMessage(bee.DANCING);
         if (!added) {
             //System.out.println(myAgent.getLocalName() + " is dancing");
-            ServiceDescription service = new ServiceDescription();
+            service = new ServiceDescription();
             service.setType("DANCING");
 
-            Property p1 = new Property("group", bee.getGroup());
+            Property p1 = new Property("group", bee.getGroup().toString());
             
-            Property p2 = new Property("groupSize", bee.getGroupSize() + 1);
+            Property p2 = new Property("groupSize", bee.getGroupSize());
             service.addProperties(p1);
             service.addProperties(p2);
 
             service.setName(myAgent.getLocalName());
-            DFAgentDescription dfd = new DFAgentDescription();
+            dfd = new DFAgentDescription();
             dfd.addServices(service);
             added = true;
             try {
@@ -53,11 +55,6 @@ public class DancingBehaviour extends SimpleBehaviour
             } catch (FIPAException e) {
                 e.printStackTrace();
             }
-        }
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(DancingBehaviour.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -72,11 +69,11 @@ public class DancingBehaviour extends SimpleBehaviour
             s-= alpha;
             theta += alpha;
         }
+        
         utility = newUtility;
-        double pn = Math.pow(s, 2)/(Math.pow(s, 2)+Math.pow(theta, 2));
-        int r = rand.nextInt(101);
-        //System.out.println(myAgent.getAID().getLocalName()+": "+pn*100+" "+ r);
-        return pn*100<r;
+        double pd = Math.pow(s, 2)/(Math.pow(s, 2)+Math.pow(theta, 2));
+        int r = rand.nextInt(100);
+        return pd*100<r;
     }
     
     @Override
@@ -84,6 +81,7 @@ public class DancingBehaviour extends SimpleBehaviour
         try
         {
             DFService.deregister(myAgent);
+            dfd.removeServices(service);
             //System.out.println(myAgent.getAID().getLocalName() + " is watching");
             added = false;
         }

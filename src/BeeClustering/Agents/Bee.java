@@ -10,16 +10,18 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Bee extends Agent
 {
     public static final int VISITING    = 0;
     public static final int WATCHING    = 1;
     public static final int DANCING     = 2;
-    
+    public static double maxDistance;
     //private int maxSteps = 200;
 
-    private AID group;
+    private AID group = null;
     private float x, y;
     private int groupSize;
     
@@ -34,7 +36,13 @@ public class Bee extends Agent
             this.setX(Float.parseFloat((String)arg[0]));
             this.setY(Float.parseFloat((String)arg[1]));
         }
-        
+        while(group == null){
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Bee.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         addBehaviour(new BeeFSMBehaviour(this));
     }
    
@@ -60,8 +68,9 @@ public class Bee extends Agent
             registerTransition(ONE_STATE, TWO_STATE, 1);
             registerTransition(TWO_STATE, TWO_STATE, 0);
             registerTransition(TWO_STATE, THREE_STATE, 1);
-            registerTransition(THREE_STATE, THREE_STATE, 0);
-            registerTransition(THREE_STATE, ONE_STATE, 1);
+            registerTransition(THREE_STATE, TWO_STATE, 0);
+            registerTransition(THREE_STATE, ONE_STATE, 1);            
+            registerTransition(THREE_STATE, THREE_STATE, 2);
         }
     }
     
@@ -71,7 +80,7 @@ public class Bee extends Agent
             if(message.getPerformative() == ACLMessage.REQUEST){
                 ACLMessage reply = message.createReply();
                 reply.setPerformative(ACLMessage.INFORM);
-                reply.setContent(this.getX() + " " + this.getY() + " " + this.getGroup() + " " + replyContent);
+                reply.setContent(this.getX() + " " + this.getY() + " " + replyContent + " " + this.getGroup().toString());
                 this.send(reply);
             }
             message = this.receive();

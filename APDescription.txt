@@ -1,1 +1,1 @@
-( ap-description  :name "UFABC" :ap-services (set ( ap-service  :name fipa.mts.mtp.http.std :type fipa.mts.mtp.http.std :addresses (sequence http://ufabc-OptiPlex-9010:7778/acc))))
+( ap-description  :name "UFABC" :ap-services (set ( ap-service  :name fipa.mts.mtp.http.std :type fipa.mts.mtp.http.std :addresses (sequence http://alan-All-Series:7778/acc))))

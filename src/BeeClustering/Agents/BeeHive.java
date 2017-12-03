@@ -9,10 +9,12 @@ public class BeeHive extends Agent{
     public ArrayList<AID> bees;
     private float maxX, maxY, minX, minY;    
     
-    @Override
-    public void setup(){    
+    public BeeHive(){        
         bees = new ArrayList<AID>();
-        
+    }
+    
+    @Override
+    public void setup(){            
         addBehaviour(new BeeHiveBehaviour(this));
     }
     

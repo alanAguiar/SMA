@@ -30,38 +30,31 @@ public class VisitingBehaviour extends OneShotBehaviour
         message = myAgent.receive(MT);
         while(message==null)
             message = myAgent.receive(MT);
-            //adicionar timeout
+          
         String content = message.getContent();
         Scanner scan = new Scanner(content);
         scan.useLocale(Locale.US);
         float x = scan.nextFloat();
         float y = scan.nextFloat();
-        //int group = scan.nextInt();
-
-        System.out.println("Abelha "+bee.getX() +", " +bee.getY() + " visitendo "+ x + ", " + y);
-            
-        double distance = Math.sqrt(Math.pow(bee.getX() - x, 2) + Math.pow(bee.getY() -y, 2));
-        double pa = 100 / (distance + 1);
         
+        double distance = Math.sqrt(Math.pow(bee.getX() - x, 2) + Math.pow(bee.getY() -y, 2));
+        double pa = (Bee.maxDistance-distance)/Bee.maxDistance;
+        pa *= pa*100;
+
         Random rand = new Random();
         int r = rand.nextInt(100);
         
-        if(r>pa){
+        if(pa > r){
             double utility = bee.getGroupUtility();
-            
             ACLMessage removeBee = new ACLMessage(ACLMessage.INFORM);
             removeBee.addReceiver(bee.getGroup());
             removeBee.setContent("Remove");
             bee.send(removeBee);
-            
             double newUtility = bee.getGroupUtility();
-            
-            if(newUtility >= utility){
+            if(newUtility > utility){
                 bee.setGroup(bee.getVisitedGroup());
-                returnValue = 1;
             }
-            else
-                returnValue = 0;
+            returnValue = 1;
             
             ACLMessage addBee = new ACLMessage(ACLMessage.INFORM);
             addBee.addReceiver(bee.getGroup());

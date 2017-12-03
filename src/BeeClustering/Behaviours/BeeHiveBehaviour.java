@@ -1,6 +1,7 @@
 package BeeClustering.Behaviours;
 
 import BeeClustering.Agents.BeeHive;
+import BeeClustering.aux.Key;
 import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -20,7 +21,7 @@ import javax.swing.SwingUtilities;
 
 public class BeeHiveBehaviour extends CyclicBehaviour{
     private BeeHive bh;
-    private Map<Key, int[]> points;
+    private Map<Key, String[]> points;
     private JFrame frame;
     private BeeHivePanel pane;
     
@@ -59,28 +60,28 @@ public class BeeHiveBehaviour extends CyclicBehaviour{
             scan.useLocale(Locale.US);
             float x = scan.nextFloat();
             float y = scan.nextFloat();
-            int group = scan.nextInt();
             int state = scan.nextInt();
-            int val[] = {group, state};
+            String group = scan.nextLine();
+            String val[] = {group, Integer.toString(state)};
             points.put(new Key(x, y), val);
             message = myAgent.receive();
         }               
-             
+        
         pane.repaint();
         
         try {
-            Thread.sleep(100);
+            Thread.sleep(1500);
         } catch (InterruptedException ex) {
             Logger.getLogger(BeeHiveBehaviour.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     private class BeeHivePanel extends JPanel{
-        private Map<Key, int[]> points;
+        private Map<Key, String[]> points;
         private float maxX, minX, maxY, minY;
         private int height, width;
         
-        public BeeHivePanel(Map<Key, int[]> p, float maxX, float minX, float maxY, float minY, int w, int h){
+        public BeeHivePanel(Map<Key, String[]> p, float maxX, float minX, float maxY, float minY, int w, int h){
             this.points = p;
             this.maxX = maxX;
             this.maxY = maxY;
@@ -97,52 +98,29 @@ public class BeeHiveBehaviour extends CyclicBehaviour{
             g2.setFont(new Font("default", Font.BOLD, 14));
             
             for(Key key : this.points.keySet()){  
-                int value[] = points.get(key);
-//                int color = value[0] * 50;
-//                if(color%3 == 0)
-//                    g2.setColor(new Color(255, color, color));
-//                else if(color%2 == 1)
-//                    g2.setColor(new Color(color,255, color));
-//                else 
-//                    g2.setColor(new Color(color, color, 255));
+                String value[] = points.get(key);
+                int color = (Math.abs(value[0].hashCode()))%255;
+                if(color%3 == 0)
+                    g2.setColor(new Color(255, color/2, color));
+                else if(color%2 == 1)
+                    g2.setColor(new Color(color,255, color/2));
+                else 
+                    g2.setColor(new Color(color/2, color, 255));
 
-                switch(value[1]){
-                    case 0:
-                        g2.drawString("V",((key.x-minX)/(maxX-minX)*(this.width-50))+25, ((key.y-minY)/(maxY-minY)*(this.height-50))+25);
+                switch(value[1].charAt(0)){
+                    case '0':
+                        g2.drawString("V",((key.x-minX)/(maxX-minX+0.1f)*(this.width-50))+25, ((key.y-minY)/(maxY-minY+0.1f)*(this.height-50))+25);
                         break;
-                    case 1:
-                        g2.drawString("W",((key.x-minX)/(maxX-minX)*(this.width-50))+25, ((key.y-minY)/(maxY-minY)*(this.height-50))+25);
+                    case '1':
+                        g2.drawString("W",((key.x-minX)/(maxX-minX+0.1f)*(this.width-50))+25, ((key.y-minY)/(maxY-minY+0.1f)*(this.height-50))+25);
                         break;
-                    case 2:
-                        g2.drawString("D", ((key.x-minX)/(maxX-minX)*(this.width-50))+25, ((key.y-minY)/(maxY-minY)*(this.height-50))+25);
+                    case '2':
+                        g2.drawString("D", ((key.x-minX)/(maxX-minX+0.1f)*(this.width-50))+25, ((key.y-minY)/(maxY-minY+0.1f)*(this.height-50))+25);
+   
                         break;
                 }
             }
         }
     }
-    
-    private class Key{
-        private float x, y;
-        public Key(float x, float y){
-            this.x = x;
-            this.y = y;
-        }
-        
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (!(o instanceof Key)) {
-                return false;
-            }
-            Key key = (Key) o;
-            return x == key.x && y == key.y;
-        }
 
-        @Override
-        public int hashCode() {
-            return (int)(((int)this.x << 16)+this.y);
-        }
-    }
 }

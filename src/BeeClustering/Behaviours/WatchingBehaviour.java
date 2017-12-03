@@ -3,11 +3,12 @@ package BeeClustering.Behaviours;
 import BeeClustering.Agents.Bee;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
-import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.Property;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.lang.acl.StringACLCodec;
+import java.io.StringReader;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.logging.Level;
@@ -29,7 +30,6 @@ public class WatchingBehaviour extends OneShotBehaviour{
     public void action() {
         bee.receiveMessage(bee.WATCHING);
         DFAgentDescription agentDescription = new DFAgentDescription();
-
         ServiceDescription sd = new ServiceDescription();
         sd.setType("DANCING"); 
 
@@ -45,20 +45,23 @@ public class WatchingBehaviour extends OneShotBehaviour{
                     group = (Property)properties.next();
                     groupSize = (Property)properties.next();
                     bee.setVisitedBee(result[r].getName());
-                    bee.setVisitedGroup((AID)group.getValue());
-                }while(bee.getVisitedGroup() == bee.getGroup());
+                    StringACLCodec codec = new StringACLCodec(new StringReader((String)group.getValue()), null);
+                    AID groupAID = codec.decodeAID();
+                    bee.setVisitedGroup(groupAID);
+                }while(bee.getVisitedGroup().toString().equals(bee.getGroup().toString()));
 
                 int count =0;
                 for (DFAgentDescription result1 : result) {
                     ServiceDescription service = (ServiceDescription) result1.getAllServices().next();
                     Iterator properties = service.getAllProperties();
                     Property p = (Property) properties.next();
-                    if((AID)p.getValue() == (AID)group.getValue()){
+                    StringACLCodec codec = new StringACLCodec(new StringReader((String)p.getValue()), null);
+                    AID pAID = codec.decodeAID();
+                    if(pAID.equals(bee.getVisitedGroup())){
                         count++;
                     }
                 }
-                
-                pn = (count/Integer.parseInt((String)groupSize.getValue())) * 100;
+                pn = (count*100f/Integer.parseInt((String)groupSize.getValue()));
             } 
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,11 +70,6 @@ public class WatchingBehaviour extends OneShotBehaviour{
 
     @Override
     public int onEnd() {
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(WatchingBehaviour.class.getName()).log(Level.SEVERE, null, ex);
-        }
         int r = rand.nextInt(100);
         if(pn > r){
             return 1;
