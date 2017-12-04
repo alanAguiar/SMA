@@ -51,6 +51,8 @@ public class Group extends Agent{
     public void calculateUtility(){
         if(groupComponents.isEmpty())
             utility = 2;
+        else if(groupComponents.size() == 1)
+            utility = 1;
         else{
             double var = 0;
             for(Map.Entry<AID, float[]> entry : groupComponents.entrySet())

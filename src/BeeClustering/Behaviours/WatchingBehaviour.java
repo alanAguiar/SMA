@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 public class WatchingBehaviour extends OneShotBehaviour{
     Bee bee;
-    private float pn;
+    private float pn=0;
     private Property group, groupSize;
     private Random rand;
     
@@ -32,7 +32,7 @@ public class WatchingBehaviour extends OneShotBehaviour{
         DFAgentDescription agentDescription = new DFAgentDescription();
         ServiceDescription sd = new ServiceDescription();
         sd.setType("DANCING"); 
-
+        
         agentDescription.addServices(sd);
         try {
             DFAgentDescription[] result = DFService.search(myAgent, agentDescription);
@@ -48,6 +48,7 @@ public class WatchingBehaviour extends OneShotBehaviour{
                     StringACLCodec codec = new StringACLCodec(new StringReader((String)group.getValue()), null);
                     AID groupAID = codec.decodeAID();
                     bee.setVisitedGroup(groupAID);
+                    //System.out.println(bee.getGroup().getLocalName());
                 }while(bee.getVisitedGroup().toString().equals(bee.getGroup().toString()));
 
                 int count =0;

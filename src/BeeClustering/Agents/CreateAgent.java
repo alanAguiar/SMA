@@ -21,7 +21,7 @@ public class CreateAgent {
     public static void main(String args[]) throws InterruptedException {
         startMainContainer("127.0.0.1", Profile.LOCAL_PORT, "UFABC");
         try {
-            File file = new File("iris.txt");
+            File file = new File("hepta.txt");
             Scanner scan = new Scanner(file);
             scan.useLocale(Locale.US);
             int i=0;
@@ -31,12 +31,11 @@ public class CreateAgent {
             BeeHive bh = new BeeHive();
             Map<Key, Integer> createdBees;
             createdBees = new HashMap<Key, Integer>();
-            while(scan.hasNextLine() && i<60){
+            while(scan.hasNextLine()){
                 String line = scan.nextLine();
-                String[] elements = line.split(",");
-                                
-                float x = Float.parseFloat(elements[2]);
-                float y = Float.parseFloat(elements[3]);
+                String[] elements = line.split("\\s+");                                
+                float x = Float.parseFloat(elements[1]);
+                float y = Float.parseFloat(elements[2]);
                 Key k = new Key(x, y);
                 if(!createdBees.containsKey(k))
                 {

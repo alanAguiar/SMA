@@ -23,6 +23,7 @@ public class VisitingBehaviour extends OneShotBehaviour
     @Override
     public void action() {
         bee.receiveMessage(bee.VISITING);
+        
         ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
         message.setSender(myAgent.getAID());
         message.addReceiver(bee.getVisitedBee());
@@ -50,13 +51,11 @@ public class VisitingBehaviour extends OneShotBehaviour
 
         double distance = Math.sqrt(Math.pow(bee.getX() - x, 2) + Math.pow(bee.getY() -y, 2));
         double pa = (Bee.maxDistance-distance)/Bee.maxDistance;
-        pa *= 100;
+        pa = Math.pow(pa, 2)*100;
 
         Random rand = new Random();
         int r = rand.nextInt(100);
-        System.out.println("**"+distance);
         if(pa > r){
-            System.out.println("--"+distance + "  "+pa + "   :   "+ Bee.maxDistance);
             double utility=0;
             try {
                 utility = bee.getGroupUtility();
