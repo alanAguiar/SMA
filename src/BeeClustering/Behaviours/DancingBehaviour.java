@@ -16,7 +16,7 @@ public class DancingBehaviour extends SimpleBehaviour
 {    
     Bee bee;
     private double s=1, theta=1;
-    private final double alpha = 0.02;
+    private final double alpha = 0.2;
     private double utility;
     private Random rand;
     DFAgentDescription dfd;
@@ -33,7 +33,11 @@ public class DancingBehaviour extends SimpleBehaviour
     
     @Override
     public void action() {
-        this.utility = bee.getGroupUtility();
+        try {
+            this.utility = bee.getGroupUtility();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(DancingBehaviour.class.getName()).log(Level.SEVERE, null, ex);
+        }
         bee.receiveMessage(bee.DANCING);
         if (!added) {
             //System.out.println(myAgent.getLocalName() + " is dancing");
@@ -60,7 +64,12 @@ public class DancingBehaviour extends SimpleBehaviour
 
     @Override
     public boolean done(){
-        double newUtility = bee.getGroupUtility();
+        double newUtility=0;
+        try {
+            newUtility = bee.getGroupUtility();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(DancingBehaviour.class.getName()).log(Level.SEVERE, null, ex);
+        }
         if(newUtility > utility){
             s+= alpha;
             theta -= alpha;

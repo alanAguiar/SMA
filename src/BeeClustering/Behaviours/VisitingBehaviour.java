@@ -51,7 +51,7 @@ public class VisitingBehaviour extends OneShotBehaviour
 
         double distance = Math.sqrt(Math.pow(bee.getX() - x, 2) + Math.pow(bee.getY() -y, 2));
         double pa = (Bee.maxDistance-distance)/Bee.maxDistance;
-        pa = Math.pow(pa, 2)*100;
+        pa = Math.pow(pa, 3)*75;
 
         Random rand = new Random();
         int r = rand.nextInt(100);
