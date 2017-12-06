@@ -3,16 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/alan/NetBeansProjects/ProjetoSMA/src/BeeClustering/Agents/Bee.java</file>
-            <file>file:/home/alan/NetBeansProjects/ProjetoSMA/src/BeeClustering/Agents/CreateAgent.java</file>
-            <file>file:/home/alan/NetBeansProjects/ProjetoSMA/src/BeeClustering/Behaviours/DancingBehaviour.java</file>
-            <file>file:/home/alan/NetBeansProjects/ProjetoSMA/src/BeeClustering/Behaviours/WatchingBehaviour.java</file>
-            <file>file:/home/alan/NetBeansProjects/ProjetoSMA/src/BeeClustering/Behaviours/BeeHiveBehaviour.java</file>
-            <file>file:/home/alan/NetBeansProjects/ProjetoSMA/src/BeeClustering/aux/Key.java</file>
-            <file>file:/home/alan/NetBeansProjects/ProjetoSMA/src/BeeClustering/Agents/BeeHive.java</file>
-            <file>file:/home/alan/NetBeansProjects/ProjetoSMA/src/BeeClustering/Agents/Group.java</file>
-            <file>file:/home/alan/NetBeansProjects/ProjetoSMA/src/BeeClustering/Behaviours/VisitingBehaviour.java</file>
-            <file>file:/home/alan/NetBeansProjects/ProjetoSMA/src/BeeClustering/Behaviours/GroupBehaviour.java</file>
+            <file>file:/home/ufabc/Área%20de%20Trabalho/SMA/src/BeeClustering/Behaviours/GroupBehaviour.java</file>
+            <file>file:/home/ufabc/Área%20de%20Trabalho/SMA/src/BeeClustering/Behaviours/BeeHiveBehaviour.java</file>
+            <file>file:/home/ufabc/Área%20de%20Trabalho/SMA/src/BeeClustering/Behaviours/WatchingBehaviour.java</file>
+            <file>file:/home/ufabc/Área%20de%20Trabalho/SMA/src/BeeClustering/Behaviours/DancingBehaviour.java</file>
+            <file>file:/home/ufabc/Área%20de%20Trabalho/SMA/src/BeeClustering/Agents/CreateAgent.java</file>
+            <file>file:/home/ufabc/Área%20de%20Trabalho/SMA/src/BeeClustering/Behaviours/VisitingBehaviour.java</file>
+            <file>file:/home/ufabc/Área%20de%20Trabalho/SMA/src/BeeClustering/Agents/Bee.java</file>
+            <file>file:/home/ufabc/Área%20de%20Trabalho/SMA/src/BeeClustering/Agents/Group.java</file>
         </group>
     </open-files>
 </project-private>

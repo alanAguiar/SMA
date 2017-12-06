@@ -41,7 +41,7 @@ public class Group extends Agent{
             centroidX = 0;
             centroidY = 0;
         }
-        else{
+        else if(values != null){
             centroidX = ((centroidX*size) - values[0])/(size - 1);        
             centroidY = ((centroidY*size) - values[1])/(size - 1);
         }
@@ -73,10 +73,6 @@ public class Group extends Agent{
         return groupComponents.size();
     }
     
-    @Override
-    public void takeDown(){
-        System.out.println(this.getAID().getLocalName() + " deleted");
-    }
 }
 
 

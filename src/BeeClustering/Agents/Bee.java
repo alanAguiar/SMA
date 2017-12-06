@@ -83,11 +83,18 @@ public class Bee extends Agent
                                 
                 this.send(reply);
             }
+            if(message.getPerformative() == ACLMessage.CANCEL){
+                ACLMessage inform = new ACLMessage(ACLMessage.INFORM);
+                inform.addReceiver(this.getGroup());
+                inform.setContent("Remove");
+                this.send(inform);
+                this.doDelete();
+            }
             message = this.receive();
         }
     }     
     
-    public double getGroupUtility() throws InterruptedException{
+    public double getGroupUtility(int state) throws InterruptedException{
         ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
         message.addReceiver(this.getGroup());
         this.send(message);
@@ -99,6 +106,7 @@ public class Bee extends Agent
         message = this.receive(MT3);
         while(message==null){
             message = this.receive(MT3);
+            receiveMessage(state);
             Thread.sleep(100);
         }
         

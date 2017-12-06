@@ -51,14 +51,14 @@ public class VisitingBehaviour extends OneShotBehaviour
 
         double distance = Math.sqrt(Math.pow(bee.getX() - x, 2) + Math.pow(bee.getY() -y, 2));
         double pa = (Bee.maxDistance-distance)/Bee.maxDistance;
-        pa = Math.pow(pa, 3)*75;
+        pa = Math.pow(pa, 2)*50;
 
         Random rand = new Random();
         int r = rand.nextInt(100);
         if(pa > r){
             double utility=0;
             try {
-                utility = bee.getGroupUtility();
+                utility = bee.getGroupUtility(bee.VISITING);
             } catch (InterruptedException ex) {
                 Logger.getLogger(VisitingBehaviour.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -71,7 +71,7 @@ public class VisitingBehaviour extends OneShotBehaviour
             if(bee.getGroupSize() > 1)
             {
                 try {
-                    newUtility = bee.getGroupUtility();
+                    newUtility = bee.getGroupUtility(bee.VISITING);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(VisitingBehaviour.class.getName()).log(Level.SEVERE, null, ex);
                 }

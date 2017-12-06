@@ -26,12 +26,14 @@ public class BeeHiveBehaviour extends CyclicBehaviour{
     private JFrame frame;
     private BeeHivePanel pane;
     
+    int timeToLive = 100;
+    
     public BeeHiveBehaviour(BeeHive bh){
         super(bh);
         this.bh = bh;
         points = new ConcurrentHashMap<>(); 
         pane = new BeeHivePanel(points, bh.getMaxX(), bh.getMinX(), bh.getMaxY(), bh.getMinY(), 640, 480);
-        
+                
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {               
@@ -46,35 +48,47 @@ public class BeeHiveBehaviour extends CyclicBehaviour{
     
     @Override
     public void action() {
-        
-        ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
-        message.setSender(myAgent.getAID());
-        for (AID bee : bh.bees) {
-            message.addReceiver(bee);
-        }
-        myAgent.send(message);
-        
-        message = myAgent.receive();
-        while(message!=null){
-            String content = message.getContent();
-            Scanner scan = new Scanner(content);
-            scan.useLocale(Locale.US);
-            float x = scan.nextFloat();
-            float y = scan.nextFloat();
-            int state = scan.nextInt();
-            String group = scan.nextLine();
-            String val[] = {group, Integer.toString(state)};
-            points.put(new Key(x, y), val);
+        if(timeToLive-- > 0)
+        {
+            System.out.println("Ciclos de execução restantes:"+timeToLive);
+            ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+            message.setSender(myAgent.getAID());
+            for (AID bee : bh.bees) {
+                message.addReceiver(bee);
+            }
+            myAgent.send(message);
+
             message = myAgent.receive();
-        }           
-               
-        
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(BeeHiveBehaviour.class.getName()).log(Level.SEVERE, null, ex);
+            while(message!=null){
+                String content = message.getContent();
+                Scanner scan = new Scanner(content);
+                scan.useLocale(Locale.US);
+                float x = scan.nextFloat();
+                float y = scan.nextFloat();
+                int state = scan.nextInt();
+                String group = scan.nextLine();
+                String val[] = {group, Integer.toString(state)};
+                points.put(new Key(x, y), val);
+                message = myAgent.receive();
+            }           
+
+
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(BeeHiveBehaviour.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            pane.repaint();
         }
-        pane.repaint();
+        else{
+            ACLMessage message = new ACLMessage(ACLMessage.CANCEL);
+            message.setSender(myAgent.getAID());
+            for (AID bee : bh.bees) {
+                message.addReceiver(bee);
+            }
+            myAgent.send(message);
+            myAgent.doDelete();
+        }
     }
     
     private class BeeHivePanel extends JPanel{

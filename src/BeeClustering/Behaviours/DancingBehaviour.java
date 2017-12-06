@@ -7,7 +7,6 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.Property;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
-import jade.lang.acl.ACLMessage;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,8 +14,8 @@ import java.util.logging.Logger;
 public class DancingBehaviour extends SimpleBehaviour
 {    
     Bee bee;
-    private double s=1, theta=1;
-    private final double alpha = 0.2;
+    private double s=1, theta=0.5;
+    private final double alpha = 0.02;
     private double utility;
     private Random rand;
     DFAgentDescription dfd;
@@ -34,7 +33,7 @@ public class DancingBehaviour extends SimpleBehaviour
     @Override
     public void action() {
         try {
-            this.utility = bee.getGroupUtility();
+            this.utility = bee.getGroupUtility(Bee.DANCING);
         } catch (InterruptedException ex) {
             Logger.getLogger(DancingBehaviour.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -66,7 +65,7 @@ public class DancingBehaviour extends SimpleBehaviour
     public boolean done(){
         double newUtility=0;
         try {
-            newUtility = bee.getGroupUtility();
+            newUtility = bee.getGroupUtility(bee.DANCING);
         } catch (InterruptedException ex) {
             Logger.getLogger(DancingBehaviour.class.getName()).log(Level.SEVERE, null, ex);
         }
