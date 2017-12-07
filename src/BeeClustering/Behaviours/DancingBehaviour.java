@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 public class DancingBehaviour extends SimpleBehaviour
 {    
     Bee bee;
-    private double s=1, theta=0.5;
+    private double s=1, theta=0.8;
     private final double alpha = 0.02;
     private double utility;
     private Random rand;
@@ -80,6 +80,8 @@ public class DancingBehaviour extends SimpleBehaviour
         
         utility = newUtility;
         double pd = Math.pow(s, 2)/(Math.pow(s, 2)+Math.pow(theta, 2));
+        if(bee.getGroupSize() == 1)
+            pd = 0;
         int r = rand.nextInt(100);
         return pd*100<r;
     }

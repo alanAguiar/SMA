@@ -23,14 +23,14 @@ public class CreateAgent {
     public static void main(String args[]) throws InterruptedException {
         startMainContainer("127.0.0.1", Profile.LOCAL_PORT, "UFABC");
         try {
-            System.out.println("Carregando a base hepta...");
-            loadDataset("hepta.txt", 1, 2,"\\s+");
-//            System.out.println("Carregando a base iris...");
-//            loadDataset("hepta.txt", 2, 3,",");          
+//            System.out.println("Carregando a base hepta...");
+//            loadDataset("hepta.txt", 1, 2,"\\s+");
+            System.out.println("Carregando a base iris...");
+            loadDataset("iris.txt", 2, 3,",");   
+            System.out.println("Execução iniciada");
         }catch(Exception e){
             e.printStackTrace();
-        }
-          
+        } 
         
     }
 

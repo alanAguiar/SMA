@@ -3,7 +3,10 @@ package BeeClustering.Agents;
 import BeeClustering.Behaviours.BeeHiveBehaviour;
 import jade.core.AID;
 import jade.core.Agent;
+import jade.wrapper.StaleProxyException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BeeHive extends Agent{
     public ArrayList<AID> bees;
@@ -16,6 +19,16 @@ public class BeeHive extends Agent{
     @Override
     public void setup(){            
         addBehaviour(new BeeHiveBehaviour(this));
+    }
+    
+    @Override
+    public void takeDown(){
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(BeeHive.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println("Execução finalizada");
     }
     
     public void addBee(AID b){

@@ -39,6 +39,7 @@ public class WatchingBehaviour extends OneShotBehaviour{
             if (result.length > 0){
                 
                 do{
+                    bee.receiveMessage(Bee.WATCHING);
                     int r = rand.nextInt(result.length);    
                     ServiceDescription service = (ServiceDescription)result[r].getAllServices().next();
                     Iterator  properties = service.getAllProperties();

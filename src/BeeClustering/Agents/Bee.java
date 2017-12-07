@@ -45,7 +45,7 @@ public class Bee extends Agent
         }
         addBehaviour(new BeeFSMBehaviour(this));
     }
-   
+      
     private class BeeFSMBehaviour extends FSMBehaviour{
         private static final String ONE_STATE = "DANCING";
         private static final String TWO_STATE = "WATCHING";
@@ -79,7 +79,7 @@ public class Bee extends Agent
             if(message.getPerformative() == ACLMessage.REQUEST){
                 ACLMessage reply = message.createReply();
                 reply.setPerformative(ACLMessage.INFORM);
-                reply.setContent(this.getX() + " " + this.getY() + " " + replyContent + " " + this.getGroup().getLocalName());
+                reply.setContent(this.getX() + " " + this.getY() + " " + replyContent + " " + this.getGroup().toString());
                                 
                 this.send(reply);
             }

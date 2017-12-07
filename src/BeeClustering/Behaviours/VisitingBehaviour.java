@@ -36,6 +36,7 @@ public class VisitingBehaviour extends OneShotBehaviour
         
         while(message==null){
             message = myAgent.receive(MT3);
+            bee.receiveMessage(Bee.VISITING);
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ex) {
@@ -51,7 +52,7 @@ public class VisitingBehaviour extends OneShotBehaviour
 
         double distance = Math.sqrt(Math.pow(bee.getX() - x, 2) + Math.pow(bee.getY() -y, 2));
         double pa = (Bee.maxDistance-distance)/Bee.maxDistance;
-        pa = Math.pow(pa, 2)*50;
+        pa = Math.pow(pa, 2)*60;
 
         Random rand = new Random();
         int r = rand.nextInt(100);

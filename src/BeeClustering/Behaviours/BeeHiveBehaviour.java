@@ -4,12 +4,16 @@ import BeeClustering.Agents.BeeHive;
 import BeeClustering.aux.Key;
 import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.lang.acl.ACLCodec;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.StringACLCodec;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.util.HashMap;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
@@ -26,7 +30,7 @@ public class BeeHiveBehaviour extends CyclicBehaviour{
     private JFrame frame;
     private BeeHivePanel pane;
     
-    int timeToLive = 100;
+    int timeToLive = 1000;
     
     public BeeHiveBehaviour(BeeHive bh){
         super(bh);
@@ -38,7 +42,7 @@ public class BeeHiveBehaviour extends CyclicBehaviour{
             @Override
             public void run() {               
                 frame = new JFrame("Bee Clustering");
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 frame.setSize(640, 480);
                 frame.setVisible(true);
                 frame.setContentPane(pane);
@@ -80,7 +84,7 @@ public class BeeHiveBehaviour extends CyclicBehaviour{
             }
             pane.repaint();
         }
-        else{
+        else{              
             ACLMessage message = new ACLMessage(ACLMessage.CANCEL);
             message.setSender(myAgent.getAID());
             for (AID bee : bh.bees) {
@@ -113,7 +117,8 @@ public class BeeHiveBehaviour extends CyclicBehaviour{
             g2.setFont(new Font("default", Font.BOLD, 14));
             for(Key key : this.points.keySet()){  
                 String value[] = points.get(key);
-                int color = (Math.abs(value[0].hashCode()))%255;
+                int color = (Math.abs(value[0].hashCode() * 100));
+                color = color % 255;
                 if(color%3 == 0)
                     g2.setColor(new Color(255, color/2, color));
                 else if(color%2 == 1)
